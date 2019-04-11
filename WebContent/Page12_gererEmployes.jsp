@@ -35,6 +35,11 @@ table, th, td {
 .pagination a:hover:not (.active ) {
 	background-color: #ddd;
 }
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
 </style>
 </head>
 <body>
@@ -47,7 +52,7 @@ table, th, td {
 			<tr>
 				<td>N° Employe</td>
 				<td><input type="text" name="employeeID"
-					value="${employee.employeeID}"></td>
+					value="${employee.employeeID == 0 ? '' : employee.employeeID}"></td>
 			</tr>
 			<tr>
 				<td>Nom</td>
@@ -59,6 +64,7 @@ table, th, td {
 				<td><input type="text" name="firstName"
 					value="${employee.firstName}"></td>
 			</tr>
+			
 		</table>
 		
 		<input type="hidden" name="currentPage" value="${currentPage}">
@@ -108,8 +114,8 @@ table, th, td {
 		
 		<tr>
 			<td><% out.print(emp.getEmployeeID());%></td>
-			<td><% out.print(emp.getFirstName());%></td>
 			<td><% out.print(emp.getLastName());%></td>
+			<td><% out.print(emp.getFirstName());%></td>
 		</tr>
 		
 		<%
@@ -136,7 +142,7 @@ table, th, td {
 		%>
 		<a
 			href="employes?submit=chercher&currentPage=<% out.print(i);%>&page=<% out.print(j);%>&employeeID=${employee.employeeID}"
-			class="active">
+			class="active disabled">
 			<%
 			    out.print(j);
 			%>

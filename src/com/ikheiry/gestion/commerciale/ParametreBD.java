@@ -43,5 +43,49 @@ public class ParametreBD {
         }
         return rs;
     }
+    
+    public static int executerUpdate(String query) throws SQLException {
+        Connection cnx = null;
+        int rs = 0;
+        Statement st = null;
+        try {
+            Class.forName(driver);
+            cnx = DriverManager.getConnection(url, user, pass);
+            st = cnx.createStatement();
+            rs = st.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return rs;
+    }
+    
+    public static int executerInsert(String query) throws SQLException {
+        Connection cnx = null;
+        int rs = 0, id = 0;
+        Statement st = null;
+        try {
+            Class.forName(driver);
+            cnx = DriverManager.getConnection(url, user, pass);
+            st = cnx.createStatement();
+            rs = st.executeUpdate(query);
+            
+            if (rs == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getInt(1);
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
 
 }

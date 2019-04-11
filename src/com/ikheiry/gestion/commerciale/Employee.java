@@ -78,11 +78,42 @@ public class Employee {
         try {
             ResultSet infos = ParametreBD.executerSelect(requete);
             infos.next();
-            this.setFirstName(infos.getString(2));
-            this.setLastName(infos.getString(3));
+            this.setFirstName(infos.getString(3));
+            this.setLastName(infos.getString(2));
         } catch (Exception e) {
-            this.setFirstName("walo");
-            this.setLastName("walo");
+            this.setFirstName("DOES NOT EXIST");
+            this.setLastName("DOES NOT EXIST");
+        }
+    }
+    
+    // Update
+    public void update() {
+        String requete = "UPDATE employees SET LastName='"+ this.getLastName() + "', FirstName='"+ this.getFirstName() + "' WHERE EmployeeID = " + this.getEmployeeID();
+        try {
+             ParametreBD.executerUpdate(requete);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    // Insert
+    public void insert() {
+        String requete = "INSERT INTO employees (LastName, FirstName) VALUES ('"+ this.getLastName() +"', '"+ this.getFirstName()+"')";
+        try {
+             int id = ParametreBD.executerInsert(requete);
+             this.setEmployeeID(id);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    // Delete
+    public void delete() {
+        String requete = "DELETE FROM employees WHERE EmployeeID = " + this.getEmployeeID();
+        try {
+             ParametreBD.executerUpdate(requete);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
     

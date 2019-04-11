@@ -49,20 +49,32 @@ public class EmployesCRUD extends HttpServlet {
         else if (request.getParameterMap().containsKey("submit")
                 && request.getParameter("submit").toString().equals("modifier")) {
             if (request.getParameterMap().containsKey("employeeID")
-                    && !request.getParameter("employeeID").toString().equals("")) {
+                    && request.getParameterMap().containsKey("firstName")
+                    && request.getParameterMap().containsKey("lastName")
+                    && !request.getParameter("employeeID").toString().equals("")
+                    && !request.getParameter("firstName").toString().equals("")
+                    && !request.getParameter("lastName").toString().equals("")) {
                 // appel db
-                response.getWriter().println("modifier");
-                return;
+                Employee employee = new Employee(Integer.parseInt(request.getParameter("employeeID")));
+                employee.setFirstName(request.getParameter("firstName").toString());
+                employee.setLastName(request.getParameter("lastName").toString());
+                employee.update();
+                request.setAttribute("employee", employee);
             }
         }
         // ajouter
         else if (request.getParameterMap().containsKey("submit")
                 && request.getParameter("submit").toString().equals("ajouter")) {
-            if (request.getParameterMap().containsKey("employeeID")
-                    && !request.getParameter("employeeID").toString().equals("")) {
+            if (request.getParameterMap().containsKey("firstName")
+                    && request.getParameterMap().containsKey("lastName")
+                    && !request.getParameter("firstName").toString().equals("")
+                    && !request.getParameter("lastName").toString().equals("")) {
                 // appel db
-                response.getWriter().println("ajouter");
-                return;
+                Employee employee = new Employee();
+                employee.setFirstName(request.getParameter("firstName").toString());
+                employee.setLastName(request.getParameter("lastName").toString());
+                employee.insert();
+                request.setAttribute("employee", employee);
             }
         }
         // supprimer
@@ -71,8 +83,9 @@ public class EmployesCRUD extends HttpServlet {
             if (request.getParameterMap().containsKey("employeeID")
                     && !request.getParameter("employeeID").toString().equals("")) {
                 // appel db
-                response.getWriter().println("supprimer");
-                return;
+                Employee employee = new Employee(Integer.parseInt(request.getParameter("employeeID")));
+                employee.delete();
+                request.setAttribute("employee", new Employee());
             }
         }
         
